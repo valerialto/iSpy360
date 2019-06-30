@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+Valeria Torres-Olivares
+June 2018
+
+Final AP Computer Science Program:
+Is an iSpy game in which you can pick of 2 worlds to explore and find items specified
+click the home button to play again
+-->
+<html>
+
+<head>
+    <!--connect the HTML file to script tell the HTML file to use A-frame for VR-->
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@3.2.5/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-entity-generator-component@3.0.1/dist/aframe-entity-generator-component.min.js"></script>
+    <script src="script.js"></script>
+    
+</head>
+
+<body>
+    <a-scene>
+
+        <a-assets>
+            <a-asset-item id="optimerBoldFont" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
+            
+             <img id="piazza" src="piazza.jpg">
+             <img id="bazar" src="bazar.jpg">
+             <img id="berlin" src="berlin.jpg">
+        
+        </a-assets>
+        <a-sky color="white"></a-sky>
+
+        <!--Offer up 3 worlds-- will open up to the world you click on-->
+
+        <a-text visible=true id="hello" value="Please click on the world you wish to explore" color="black" position="-2.25 0 -3" ></a-text>
+        <a-text visible=true id="directions" value="In each world you will need to find 3 items"  position="-2.1 0.5 -3" color="red"></a-text>
+         
+        <!-- here are the 3 sheres-->
+        <!--Once you click on one of the spheres you go into it and begin the game-->
+        <a-sphere visible=true onclick="enterRoom('bazarPlaza')" id="bazarSphere" position="-2 1.5 -5" scale="2 2 2" src="#bazar" radius=".5">
+            <a-animation attribute="position" to=" -2 2.5 -5" direction="alternate" dur="7000" repeat="indefinite"></a-animation>
+        </a-sphere>
+        
+        <a-sphere visible=true onclick="enterRoom('rome')" id="romeSphere" position="2 1.5 -5" scale="2 2 2" src="#piazza"  radius=".5">
+            <a-animation attribute="position" to=" 2 2.5 -5" direction="alternate" dur="7000" repeat="indefinite"></a-animation>
+        </a-sphere> 
+        
+        <!--
+        <a-sphere visible=true onclick="enterRoom('berlinCity')" id="berlinSphere" position="4 1.5 -5" scale="2 2 2" color="#berlin" radius=".5">
+            <a-animation attribute="position" to=" 4 2.5 -5" direction="alternate" dur="7000" repeat="indefinite"></a-animation>
+        </a-sphere>
+        -->
+        
+        <a-entity text-geometry="value:iSpy 360; font:#optimerBoldFont" material="color: black;" visible=true id="intro" position="-1.5 4 -3"></a-entity>
+        
+        
+        <!--camera (what the user sees/position)-->
+        <a-entity id="camera">
+            <a-animation attribute="position" dur="5000" to="0 400 0" direction="forward" begin="move"></a-animation>
+            <a-camera>
+                <a-cursor color="black"></a-cursor>
+            </a-camera>
+        </a-entity>
+        
+        <!--From here on out are the two worlds-->
+        <a-entity id="bazarPlaza" visible=false>
+            <!--Set up-->
+            <script src="https://360player.io/static/dist/scripts/embed.js" async></script>
+            <a-sky src="#bazar"></a-sky> <!--this line puts the 360 image in!!-->
+          
+            <!--Message Board + directins + menu button-->
+            <a-plane visible=true onclick="homeScreen()" id="shirt" position="11 3.8 -20" scale="2 2 2" color = pink opacity="1" width="2" height="1" rotation="0 -10 0"></a-plane> 
+            <a-text id="homeButton" onclick="homeScreen()" value="Home" scale="5 5 5" position="8.4 3.6 -18" rotation="180 180 180" color="black"></a-text>
+                
+            <a-plane id="messageBoard" color="white" height="15" width="28" position="0 -2.5 -21" rotation="180 180 0"></a-plane>
+            
+            <!--"addPoints('fountainLabel', fountain', 'bazar', '1')
+            changeTextColor('fountainLabel', 'fountain')-->
+            
+            <!--Set up the objects/the clickable parts, to see them change the opacity to 1-->
+            <a-sphere id="fountain" visible=true onclick="changeTextColor('fountainLabel', 'fountain')" position="-12 -2 3" scale="2 2 2" color = "red" opacity="0" radius="1.5"></a-sphere> 
+            <a-box visible=true onclick="changeTextColor('archLabel', 'arch')" id="arch" position="50 0 26" scale="2 2 2" color = pink opacity="0" width=15 height="4" rotation="0 -100 0"></a-box> 
+            <a-box visible=true onclick="changeTextColor('stoneDividerLabel', 'divider')" id="divider" position="50 -21 37" scale="2 2 2" color = pink opacity="0" width=40 height="4" rotation="0 -100 0"></a-box> 
+            
+            <a-sphere visible=true onclick="changeTextColor('susBagLabel', 'susBag')" id="susBag" position="-12 -6.5 7" scale="2 2 2" color = pink opacity="0" radius="0.5"></a-sphere> 
+            <a-sphere visible=true onclick="changeTextColor('interviewLabel', 'interview')" id="interview" position="-7 -2 7" scale="2 2 2" color = pink opacity="0" radius="0.5"></a-sphere> 
+            <a-sphere visible=true onclick="changeTextColor('geometricPaintingLabel', 'geoPainting')" id="geoPainting" position="-2.2 -2 21" scale="2 2 2" color = pink opacity="0" radius="0.5"></a-sphere> 
+            
+            <a-box visible=true onclick="changeTextColor('horsePaintingLabel', 'horse')" id="horse" position="-30 -5 -40" scale="2 2 2" color = pink opacity="0" width=4 height="4" rotation="0 0 0"></a-box> 
+            <a-box visible=true onclick="changeTextColor('shritLabel', 'shirt')" id="shirt" position="3 -8 13" scale="2 2 2" color = pink opacity="0" width="2" height="2" rotation="0 -10 0"></a-box> 
+            <a-box visible=true onclick="changeTextColor('baldHeadLabel', 'hair')" id="hair" position="35 -8 20" color = pink opacity="0" width=2 height="2" rotation="0 -100 0"></a-box> 
+            
+            <!--Items to find-->
+            <a-plane id="whatToFind" visible=true position="0 0 -20" color="white" opacity="0" height="45" width="40" rotation="180 180 0">
+                <a-text id="direct3" value="iSpy..." scale="5 5 5" position="8.3 -3 7" rotation="0 0 -180" color="navy"></a-text>
+                <!--Fix this part that displays the items they have to find! Add 2 more to the message board-->
+                
+                <a-text id="fountainLabel" value="a coin trap" opacity="1" scale="5 5 5" position="7 -1.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="archLabel" value="a brick structure" opacity="0" scale="5 5 5" position="7 -1.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="stoneDividerLabel" value="a stone divider" opacity="0" scale="5 5 5" position="7 -1.5 7" rotation="0 0 -180" color="black"></a-text>
+                
+                <a-text id="susBagLabel" value="a 'suspicious' looking bag" opacity="1" scale="5 5 5" position="7 0 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="interviewLabel" value="an interview in session" opacity="1" scale="5 5 5" position="7 4.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="geometricPaintingLabel" value="a geometric painting for sale" opacity="1" scale="5 5 5" position="7 3 7" rotation="0 0 -180" color="black"></a-text>
+            
+                <a-text id="horsePaintingLabel" value="a painting of a few horses" opacity="0" scale="5 5 5" position="7 1.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="shirtLabel" value="a modern take on a floral print" opacity="0" scale="5 5 5" position="7 3 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="baldHeadLabel" value="a desperate need for a toupée" opacity="1" scale="5 5 5" position="7 1.5 7" rotation="0 0 -180" color="black"></a-text>
+              
+            </a-plane>
+            
+            
+        </a-entity>
+
+        <a-entity id="rome" visible=false>
+            <!--Set up-->
+            <script src="https://360player.io/static/dist/scripts/embed.js" async></script>
+            <a-sky src="#piazza"></a-sky> <!--this line puts the 360 image in!!-->
+             
+            <a-plane visible=true onclick="homeScreen()" id="shirt" position="13.6 3.8 -20" scale="2 2 2" color = pink opacity="1" width="2" height="1" rotation="0 -10 0"></a-plane> 
+            <a-text id="homeButton" onclick="homeScreen()" value="Home" scale="5 5 5" position="10.7 3.6 -18" rotation="180 180 180" color="black"></a-text>
+                
+            <!--Message Board + directins + menu button-->
+            <a-plane id="messageBoard" color="white" height="15" width="31" position="1.2 -2.5 -21" rotation="180 180 0"></a-plane>
+            
+            <!--Set up the objects/the clickable parts, to see them change the opacity to 1-->
+            <a-sphere visible=true opacity="0" onclick="changeTextColor('crossLabel', 'cross')" id="cross" position="12 17 20" scale="2 2 2" color = pink opacity="1" radius="1.5"></a-sphere> 
+            <a-box visible=true opacity="0" onclick="changeTextColor('doorLabel', 'door')" id="door" position="50 -4 26" scale="2 2 2" color = pink opacity="1" width=2 height=5 rotation="0 -100 0"></a-box> 
+            <a-box visible=true opacity="0" onclick="changeTextColor('yellowDividerLabel', 'yellowDivider')" id="yellowDivider" position="17 -21 100" scale="2 2 2" color = pink opacity="1" width=19 height="6" rotation="0 -100 0"></a-box> 
+            <a-sphere visible=true opacity="0" onclick="changeTextColor('kickingOverPoseLabel', 'kickingOverPose')" id="kickingOverPose" position="-60 -5 -3" scale="2 2 2" color = pink opacity="1" radius="2.5"></a-sphere> 
+            <a-box visible=true opacity="0" onclick="changeTextColor('towerLabel', 'tower')" id="tower" position="-60 35 -33" scale="2 2 2" color = pink opacity="1" width=10 height=40 rotation="0 50 180"></a-box> 
+            
+            <!--Items to find-->
+            <a-plane id="whatToFind" visible=true position="0 0 -20" color="white" opacity="0" height="45" width="40" rotation="180 180 0">
+                <a-text id="direct3" value="iSpy..." scale="5 5 5" position="8.3 -3 7" rotation="0 0 -180" color="navy"></a-text>   <!--Fix this part that displays the items they have to find! Add 2 more to the message board-->
+                
+                <a-text id="crossLabel" value="a holy symbol" opacity="1" scale="5 5 5" position="7 -1.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="doorLabel" value="an entryway" opacity="1" scale="5 5 5" position="7 0 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="yellowDividerLabel" value="a yello set of dividers" opacity="1" scale="5 5 5" position="7 1.5 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="kickingOverPoseLabel" value="it looks like you are kicking it over!" opacity="1" scale="5 5 5" position="7 3 7" rotation="0 0 -180" color="black"></a-text>
+                <a-text id="towerLabel" value="but is it really leaning?" opacity="1" scale="5 5 5" position="7 4.5 7" rotation="0 0 -180" color="black"></a-text>
+                
+            </a-plane>
+            
+        </a-entity>
+
+
+    </a-scene>
+    
+    
+</body>
+
+</html>
